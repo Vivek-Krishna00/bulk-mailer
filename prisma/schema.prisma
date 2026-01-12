@@ -1,0 +1,51 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+
+model Event {
+  id          String      @id @default(cuid())
+  name        String
+  description String?
+  subject     String
+  fromName    String
+  fromEmail   String
+  template    String // HTML content with variables like {{name}}
+  status      EventStatus @default(DRAFT)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  recipients  Recipient[]
+}
+
+model Recipient {
+  id        String          @id @default(cuid())
+  email     String
+  name      String?
+  metadata  Json? // For replacements
+  eventId   String
+  event     Event           @relation(fields: [eventId], references: [id])
+  status    RecipientStatus @default(PENDING)
+  sentAt    DateTime?
+  error     String?
+  createdAt DateTime        @default(now())
+
+  @@index([eventId, status])
+}
+
+enum EventStatus {
+  DRAFT
+  SCHEDULED
+  SENDING
+  COMPLETED
+}
+
+enum RecipientStatus {
+  PENDING
+  SENT
+  FAILED
+}
