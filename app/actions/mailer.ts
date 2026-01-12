@@ -2,7 +2,7 @@
 
 import { prisma } from "@/lib/db";
 import nodemailer from "nodemailer";
-import { EventStatus, RecipientStatus } from "@prisma/client";
+import { EventStatus, RecipientStatus } from "@/app/generated/prisma";
 import { revalidatePath } from "next/cache";
 
 // Configure transporter (create once or per request? Per request allows dynamic config if needed, but here we use env)

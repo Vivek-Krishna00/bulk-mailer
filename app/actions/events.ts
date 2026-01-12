@@ -1,7 +1,7 @@
 'use server'
 
 import { prisma } from "@/lib/db";
-import { EventStatus } from "@prisma/client";
+import { EventStatus } from "@/app/generated/prisma";
 import { revalidatePath } from "next/cache";
 
 export type CreateEventData = {
